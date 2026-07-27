@@ -59,15 +59,8 @@ function LandingPage() {
     positionsRef.current[id] = { x: Math.round(x), y: Math.round(y), width: Math.round(width), height: Math.round(height) };
   }, []);
 
-  const copyPositions = useCallback(() => {
-    const result = DEMO_IMAGES.map((img) => {
-      const override = positionsRef.current[img.id];
-      return override
-        ? { id: img.id, x: override.x, y: override.y, width: override.width, height: override.height }
-        : { id: img.id, x: img.x, y: img.y, width: img.width, height: img.height };
-    });
-    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
-  }, []);
+
+
   
 
   useEffect(() => {
