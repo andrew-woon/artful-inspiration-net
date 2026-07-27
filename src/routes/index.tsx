@@ -22,8 +22,8 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
     meta: [
-      { title: "Inspo — Visual Mood Boards" },
-      { name: "description", content: "Collect, organize, and share visual inspiration on a spatial canvas." },
+      { title: "DriveOS — Operating system for automotive businesses" },
+      { name: "description", content: "Run inventory, leads, sales, workshop, and finance from one dashboard. Built for dealerships in Malaysia and Singapore." },
     ],
   }),
 });
