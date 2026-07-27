@@ -11,6 +11,12 @@ export const Route = createFileRoute("/signup")({
       throw redirect({ to: "/dashboard" });
     }
   },
+  head: () => ({
+    meta: [
+      { title: "Request access — DriveOS" },
+      { name: "description", content: "Create your DriveOS dealership workspace." },
+    ],
+  }),
   component: SignupPage,
 });
 
@@ -53,7 +59,7 @@ function SignupPage() {
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
         <DotGridBg />
         <div className="relative z-10 w-full max-w-sm rounded-lg border border-border bg-card/90 p-8 text-center shadow-sm backdrop-blur-sm">
-          <Link to="/" className="text-3xl font-semibold tracking-tight text-foreground">Inspo</Link>
+          <Link to="/" className="text-3xl font-semibold tracking-tight text-foreground">DriveOS</Link>
           <p className="mt-4 text-sm text-muted-foreground">Check your email for a confirmation link.</p>
           <Link to="/login" search={{ redirect: "/dashboard" }} className="mt-6 inline-block text-sm font-medium text-primary hover:underline">
             Back to Sign In
@@ -68,8 +74,8 @@ function SignupPage() {
       <DotGridBg />
       <div className="relative z-10 w-full max-w-sm rounded-lg border border-border bg-card/90 p-8 shadow-sm backdrop-blur-sm">
         <div className="mb-8 text-center">
-          <Link to="/" className="text-3xl font-semibold tracking-tight text-foreground">Inspo</Link>
-          <p className="mt-2 text-sm text-muted-foreground">Create your account</p>
+          <Link to="/" className="text-3xl font-semibold tracking-tight text-foreground">DriveOS</Link>
+          <p className="mt-2 text-sm text-muted-foreground">Set up your dealership workspace</p>
         </div>
 
         <button

@@ -14,6 +14,12 @@ export const Route = createFileRoute("/login")({
       throw redirect({ to: search.redirect as any });
     }
   },
+  head: () => ({
+    meta: [
+      { title: "Sign in — DriveOS" },
+      { name: "description", content: "Sign in to your DriveOS dealership workspace." },
+    ],
+  }),
   component: LoginPage,
 });
 
@@ -56,9 +62,9 @@ function LoginPage() {
       <div className="relative z-10 w-full max-w-sm rounded-lg border border-border bg-card/90 p-8 shadow-sm backdrop-blur-sm">
         <div className="mb-8 text-center">
           <Link to="/" className="text-3xl font-semibold tracking-tight text-foreground">
-            Inspo
+            DriveOS
           </Link>
-          <p className="mt-2 text-sm text-muted-foreground">Sign in to your account</p>
+          <p className="mt-2 text-sm text-muted-foreground">Sign in to your DriveOS workspace</p>
         </div>
 
         <button
