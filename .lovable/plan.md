@@ -1,29 +1,80 @@
 
+# DriveOS — Foundation Phase
 
-## Add 6 new landing page images in an outer ring
+Transform the remixed Inspo project into the DriveOS product foundation. Reuse the existing design system (Albert Sans + JetBrains Mono, oklch tokens, card/backdrop-blur aesthetic, Konva canvas), and only change what's needed to reposition the product. No new modules built out — just the skeleton.
 
-### Steps
+## 1. Landing page (`src/routes/index.tsx`)
 
-1. **Create 6 asset files** — Upload each of the 6 new images via `assets--create_asset` to `src/assets/landing-8.jpeg` through `src/assets/landing-13.jpeg`.
+Keep the Konva canvas, images, dot grid, zoom, and drag behavior exactly as-is. Only change copy and metadata:
 
-2. **Update `src/routes/index.tsx`** — Add 6 new imports and 6 new entries to `DEMO_IMAGES` with positions further from center than the existing ring. Approximate positions for the outer scatter:
+- Title card: "Inspo" → **"DriveOS"**
+- Tagline: "Your visual thinking space." → **"The operating system for modern automotive businesses."**
+- CTA "Get Started" → **"Request access"** (keeps `/signup` link)
+- Add a small secondary link "Sign in" → `/login`
+- Route `head()`: update title/description to DriveOS positioning
+- Remove the dev-only "Copy positions" button (not production-appropriate)
+
+## 2. Root metadata (`src/routes/__root.tsx`)
+
+Update all title/description/og/twitter tags from Inspo → DriveOS. Leave the existing og:image in place (revisit later — user said imagery stays for now).
+
+Copy direction: "DriveOS — Operating system for automotive businesses" / "Run inventory, leads, sales, workshop, and finance from one dashboard. Built for dealerships in Malaysia and Singapore."
+
+## 3. Auth pages (`src/routes/login.tsx`, `src/routes/signup.tsx`)
+
+Preserve layout, form fields, and Supabase auth flow. Update:
+- Brand mark "Inspo" → "DriveOS"
+- Signup subhead: mention dealership/team context ("Set up your dealership workspace")
+- Login subhead: "Sign in to your DriveOS workspace"
+- Route `head()` titles
+
+## 4. App shell — replace dashboard with sidebar layout
+
+Currently `_authenticated/dashboard.tsx` is a single page and `_authenticated/boards/$boardId.tsx` is the canvas. The shell needs to become a proper SaaS layout.
+
+**New structure:**
 
 ```text
-Existing range: roughly x: -700 to +500, y: -510 to +410
-New images placed at x: -900 to +750, y: -650 to +600
+src/routes/
+  _authenticated.tsx              → renders <AppShell><Outlet /></AppShell>
+  _authenticated/dashboard.tsx    → placeholder page
+  _authenticated/inventory.tsx    → placeholder page (new)
+  _authenticated/leads.tsx        → placeholder (new)
+  _authenticated/customers.tsx    → placeholder (new)
+  _authenticated/pipeline.tsx     → placeholder (new)
+  _authenticated/workshop.tsx     → placeholder (new)
+  _authenticated/finance.tsx      → placeholder (new)
+  _authenticated/reports.tsx      → placeholder (new)
+  _authenticated/settings.tsx     → placeholder (new)
+  _authenticated/boards/$boardId.tsx  → LEFT UNTOUCHED (per "leave DB as-is")
 ```
 
-Proposed positions (will use varied sizes similar to existing images):
-- id 8: x: -920, y: -500, ~260x260 (fashion couple — top-left outer)
-- id 9: x: 650, y: -500, ~280x280 (abstract orange — top-right outer)
-- id 10: x: -880, y: 350, ~290x290 (woman laptop — bottom-left outer)
-- id 11: x: 600, y: 400, ~250x330 (man boxes — bottom-right outer)
-- id 12: x: -350, y: -700, ~270x400 (water lilies — top-center outer)
-- id 13: x: 450, y: 500, ~240x400 (fashion crosswalk — bottom-right far)
+Redirect `/_authenticated` index to `/dashboard`.
 
-### Technical details
+**AppShell layout** (new: `src/components/app/AppShell.tsx` + `AppSidebar.tsx`):
+- Shadcn `SidebarProvider` + `Sidebar` (collapsible="icon") on the left
+- Top bar: `SidebarTrigger`, breadcrumb/page title slot, user menu (email + sign out) on the right
+- Sidebar sections:
+  - Brand: "DriveOS" wordmark (Albert Sans, tracking-tight, matches landing title style)
+  - **Overview**: Dashboard
+  - **Sales**: Inventory, Leads, Customers, Pipeline
+  - **Operations**: Workshop, Finance
+  - **Insights**: Reports
+  - **Settings** (footer of sidebar)
+- Active-route highlighting via `useRouterState`
+- Icons from lucide-react (Gauge, Car, UserPlus, Users, GitBranch, Wrench, Wallet, BarChart3, Settings)
 
-- **Files changed**: `src/routes/index.tsx` only (plus 6 new `.asset.json` files created by the asset tool)
-- No database or backend changes needed
-- Images will be visible on larger screens when users pan or zoom slightly; they sit just outside the initial viewport ring
+**Placeholder page pattern** — a shared `<ModulePlaceholder title description icon />` component rendering a centered card ("Coming soon — this module is part of the DriveOS roadmap") using existing Card styling from the landing page. Each route has its own `head()` metadata.
 
+## 5. Files touched
+
+- Edit: `src/routes/index.tsx`, `src/routes/__root.tsx`, `src/routes/login.tsx`, `src/routes/signup.tsx`, `src/routes/_authenticated.tsx`, `src/routes/_authenticated/dashboard.tsx`
+- Create: `src/components/app/AppShell.tsx`, `src/components/app/AppSidebar.tsx`, `src/components/app/ModulePlaceholder.tsx`, `src/components/app/UserMenu.tsx`, 8 new module route files
+- Leave alone: styles.css tokens, canvas components, supabase integration files, database, storage bucket, boards route
+
+## Out of scope (per user)
+
+- No new database tables or migrations
+- No real module functionality (inventory CRUD, leads pipeline, etc.)
+- No imagery swap on landing canvas
+- No design system overhaul — reuse existing tokens and typography as-is

@@ -22,8 +22,8 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
     meta: [
-      { title: "Inspo — Visual Mood Boards" },
-      { name: "description", content: "Collect, organize, and share visual inspiration on a spatial canvas." },
+      { title: "DriveOS — Operating system for automotive businesses" },
+      { name: "description", content: "Run inventory, leads, sales, workshop, and finance from one dashboard. Built for dealerships in Malaysia and Singapore." },
     ],
   }),
 });
@@ -59,15 +59,8 @@ function LandingPage() {
     positionsRef.current[id] = { x: Math.round(x), y: Math.round(y), width: Math.round(width), height: Math.round(height) };
   }, []);
 
-  const copyPositions = useCallback(() => {
-    const result = DEMO_IMAGES.map((img) => {
-      const override = positionsRef.current[img.id];
-      return override
-        ? { id: img.id, x: override.x, y: override.y, width: override.width, height: override.height }
-        : { id: img.id, x: img.x, y: img.y, width: img.width, height: img.height };
-    });
-    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
-  }, []);
+
+
   
 
   useEffect(() => {
@@ -111,30 +104,38 @@ function LandingPage() {
 
   return (
     <div ref={containerRef} className="relative h-screen w-screen overflow-hidden bg-background">
-      {/* Dev: copy positions */}
-      <button
-        onClick={copyPositions}
-        className="absolute bottom-4 right-4 z-30 rounded bg-black/80 px-3 py-1.5 text-xs text-white hover:bg-black"
-      >
-        Copy positions
-      </button>
-
       {/* Central card overlay */}
       <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center">
         <Card className="pointer-events-auto border-border/50 bg-card/90 backdrop-blur-md shadow-lg">
           <CardContent className="flex flex-col items-center gap-4 px-12 py-10">
+            <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-foreground/50" />
+              For automotive businesses
+            </div>
             <h1 className="select-none text-[clamp(2.5rem,8vw,6rem)] font-semibold leading-none tracking-tighter text-foreground/90">
-              Inspo
+              DriveOS
             </h1>
-            <p className="select-none text-xl font-medium tracking-tight text-foreground md:text-2xl">
-              Your visual thinking space.
+            <p className="max-w-md select-none text-center text-lg font-medium tracking-tight text-foreground md:text-xl">
+              The operating system for modern automotive businesses.
             </p>
-            <Link
-              to="/signup"
-              className="mt-2 rounded-md bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
-            >
-              Get Started
-            </Link>
+            <p className="max-w-md select-none text-center text-sm text-muted-foreground">
+              Run inventory, leads, sales, workshop, and finance from one dashboard. Built for dealerships in Malaysia and Singapore.
+            </p>
+            <div className="mt-2 flex items-center gap-3">
+              <Link
+                to="/signup"
+                className="rounded-md bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              >
+                Request access
+              </Link>
+              <Link
+                to="/login"
+                search={{ redirect: "/dashboard" }}
+                className="rounded-md px-4 py-2.5 text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground"
+              >
+                Sign in
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
