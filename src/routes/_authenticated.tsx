@@ -1,16 +1,9 @@
 import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
 import { AppShell } from "@/components/app/AppShell";
 
+// Auth gate temporarily disabled while we build out the app shell and modules.
+// Re-enable by restoring the beforeLoad redirect below.
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: ({ context, location }) => {
-    if (context.auth.isLoading) return;
-    if (!context.auth.isAuthenticated) {
-      throw redirect({
-        to: "/login",
-        search: { redirect: location.href },
-      });
-    }
-  },
   component: () => (
     <AppShell>
       <Outlet />
