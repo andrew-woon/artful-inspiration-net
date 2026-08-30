@@ -1,15 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  Car,
-  UserPlus,
-  Users,
-  GitBranch,
-  Wrench,
-  Wallet,
-  BarChart3,
-  Settings,
-} from "lucide-react";
+import { Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -24,28 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-
-type NavItem = { title: string; url: string; icon: React.ComponentType<{ className?: string }> };
-
-const overview: NavItem[] = [
-  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-];
-
-const sales: NavItem[] = [
-  { title: "Inventory", url: "/inventory", icon: Car },
-  { title: "Leads", url: "/leads", icon: UserPlus },
-  { title: "Customers", url: "/customers", icon: Users },
-  { title: "Pipeline", url: "/pipeline", icon: GitBranch },
-];
-
-const operations: NavItem[] = [
-  { title: "Workshop", url: "/workshop", icon: Wrench },
-  { title: "Finance", url: "/finance", icon: Wallet },
-];
-
-const insights: NavItem[] = [
-  { title: "Reports", url: "/reports", icon: BarChart3 },
-];
+import { NAV_GROUPS, NAV_ITEMS, type NavItem } from "./nav-items";
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -54,14 +23,14 @@ export function AppSidebar() {
   const isActive = (url: string) => pathname === url;
 
   const renderGroup = (label: string, items: NavItem[]) => (
-    <SidebarGroup>
+    <SidebarGroup key={label}>
       {!collapsed && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.url}>
               <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                <Link to={item.url as any} className="flex items-center gap-2">
+                <Link to={item.url as never} className="flex items-center gap-2">
                   <item.icon className="h-4 w-4" />
                   <span>{item.title}</span>
                 </Link>
@@ -76,26 +45,23 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Link
-          to="/dashboard"
-          className="flex items-center gap-2 px-2 py-1.5"
-        >
+        <Link to="/dashboard" className="flex items-center gap-2 px-2 py-1.5">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-foreground text-background text-[11px] font-bold tracking-tight">
             D
           </div>
           {!collapsed && (
-            <span className="text-sm font-semibold tracking-tight text-foreground">
-              DriveOS
-            </span>
+            <span className="text-sm font-semibold tracking-tight text-foreground">DriveOS</span>
           )}
         </Link>
       </SidebarHeader>
 
       <SidebarContent>
-        {renderGroup("Overview", overview)}
-        {renderGroup("Sales", sales)}
-        {renderGroup("Operations", operations)}
-        {renderGroup("Insights", insights)}
+        {NAV_GROUPS.map((group) =>
+          renderGroup(
+            group,
+            NAV_ITEMS.filter((i) => i.group === group),
+          ),
+        )}
       </SidebarContent>
 
       <SidebarFooter>
