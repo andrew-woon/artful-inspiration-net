@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LayoutDashboard } from "lucide-react";
-import { ModulePlaceholder } from "@/components/app/ModulePlaceholder";
+import { DashboardView } from "@/components/dashboard/DashboardView";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — DriveOS" },
-      { name: "description", content: "Overview of your dealership operations across sales, workshop, and finance." },
+      {
+        name: "description",
+        content:
+          "Today's appointments, stock, enquiries, deliveries, revenue, loans, leaderboard and activity for your dealership.",
+      },
+      { property: "og:title", content: "Dashboard — DriveOS" },
+      {
+        property: "og:description",
+        content: "One live view of your dealership: appointments, stock, enquiries, deliveries, revenue and more.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: DashboardPage,
+  component: DashboardView,
 });
-
-function DashboardPage() {
-  return (
-    <ModulePlaceholder
-      title="Dashboard"
-      description="A unified overview of your dealership — inventory health, active leads, sales velocity, and workshop load — all in one place."
-      icon={LayoutDashboard}
-    />
-  );
-}
